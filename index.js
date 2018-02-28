@@ -3,7 +3,7 @@ var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 
 var app = express();
-
+var config = require('./utilities/config');
 var defaultRouter = require('./routes/default.router');
 var bookRouter = require('./routes/book.router');
 
@@ -11,7 +11,7 @@ app.listen(3000, function () {
     console.log("server is running 3000");
 });
 
-mongoose.connect("mongodb://localhost:27017/mybooksdb", function () {
+mongoose.connect(config.conStr, function () {
     console.log("Connected");
 });
 
