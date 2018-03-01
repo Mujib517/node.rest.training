@@ -5,7 +5,7 @@ var model = mongoose.model("Book", {
     author: String,
     price: Number,
     inStock: Boolean,
-    lastUpdated: Date
+    lastUpdated: { type: Date, default: Date.now }
 });
 
 module.exports = model;
