@@ -45,10 +45,8 @@ function BookCtrl() {
 
     this.getById = function (req, res) {
         var id = req.params.id;
-        //facade
-        Book.findById(id, function (err, book) {
-
-            if (!err) {
+        Book.findById(id, { '__v': 0 }).exec()
+            .then(function (book) {
                 if (!book) {
                     res.status(404);
                     res.send("Not found");
@@ -57,13 +55,11 @@ function BookCtrl() {
                     res.status(200);
                     res.json(book);
                 }
-            }
-            else {
+            })
+            .catch(function (err) {
                 res.status(500);
                 res.send("Internal Server Error");
-            }
-        });
-
+            });
     }
 
     this.save = function (req, res) {
