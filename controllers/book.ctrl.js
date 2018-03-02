@@ -1,5 +1,6 @@
 
 var Book = require('../models/book.model');
+var Review = require('../models/reviews.model');
 
 function BookCtrl() {
     this.get = function (req, res) {
@@ -48,14 +49,15 @@ function BookCtrl() {
         var id = req.params.id;
         Book.findById(id, { '__v': 0 }).exec()
             .then(function (book) {
-                if (!book) {
-                    res.status(404);
-                    res.send("Not found");
-                }
-                else {
-                    res.status(200);
-                    res.json(book);
-                }
+
+                Review.find({ bookId: id }, { '__v': 0 })
+                    .exec()
+                    .then(function (reviews) {
+                        console.log(reviews);
+                    });
+
+                res.status(200);
+                res.send(book);
             })
             .catch(function (err) {
                 res.status(500);

@@ -6,6 +6,7 @@ var app = express();
 var config = require('./utilities/config');
 var defaultRouter = require('./routes/default.router');
 var bookRouter = require('./routes/book.router');
+var reviewRouter = require('./routes/review.router');
 
 app.listen(3000, function () {
     console.log("server is running 3000");
@@ -20,4 +21,5 @@ app.use(bodyParser.json());
 
 //HTTP GET. API, Rest api, web svc, web api
 app.use('/', defaultRouter);
+app.use('/api/reviews', reviewRouter);
 app.use('/api/books', bookRouter);
