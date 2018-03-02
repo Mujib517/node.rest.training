@@ -3,44 +3,45 @@ var Book = require('../models/book.model');
 
 function BookCtrl() {
     this.get = function (req, res) {
-        var count = 0;
-
-        // var pageSize = req.params.pageSize ? +req.params.pageSize : 10;
-        // var pageIndex = req.params.pageIndex ? +req.params.pageIndex : 0;
 
         var pageSize = +req.params.pageSize || 10;
         var pageIndex = +req.params.pageIndex || 0;
 
+        var count = 0;
 
-        Book.count(function (err, cnt) {
+        function successCount(cnt) {
             count = cnt;
             //deferred execution
-            var query = Book.find();
-            query.sort("-lastUpdated");
-            query.skip(pageIndex * pageSize);
-            query.limit(pageSize);
+            var query = Book.find()
+                .sort("-lastUpdated")
+                .skip(pageIndex * pageSize)
+                .limit(pageSize);
 
-            query.exec(function (err, books) {
-                //truthy: 1,{},"kajdfkj"
-                //falsy: 0,"",false,undefined,null,NaN
-                console.log(err);
-                if (err) {
-                    res.status(500);
-                    res.send("Internal Server Error");//
-                }
-                else {
-                    var response = {
-                        metadata: {
-                            count: count,
-                            pages: Math.ceil(count / pageSize)
-                        },
-                        data: books
-                    };
-                    res.status(200);
-                    res.json(response);
-                }
-            });
-        });
+            return query.exec();  //promise
+        }
+
+        function successResult(books) {
+            var response = {
+                metadata: {
+                    count: count,
+                    pages: Math.ceil(count / pageSize)
+                },
+                data: books
+            };
+            res.status(200);
+            res.json(response);
+
+        }
+
+        function failure(err) {
+            res.status(500);
+            res.send("Internal Server Error");//
+        }
+        //fluent api
+        Book.count().exec()
+            .then(successCount)
+            .then(successResult)
+            .catch(failure);
     }
 
     this.getById = function (req, res) {
