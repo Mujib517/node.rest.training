@@ -72,7 +72,7 @@ function BookCtrl() {
             })
             .catch(function (err) {
                 res.status(500);
-                res.send("Internal Server Error");
+                res.send(err);
             });
     }
 
