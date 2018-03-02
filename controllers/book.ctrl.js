@@ -64,59 +64,53 @@ function BookCtrl() {
     }
 
     this.save = function (req, res) {
-
         var book = new Book(req.body);
-        book.save(function (err, savedBook) {
-            if (!err) {
+        book.save()
+            .then(function (savedBook) {
                 res.status(201);//created
                 res.send(savedBook);
-            }
-            else {
+            })
+            .catch(function (err) {
                 res.status(500);
                 res.send("Internal Server Error");
-            }
-
-        });
-
+            });
     }
 
     this.delete = function (req, res) {
         var id = req.params.id;
-        Book.findByIdAndRemove(id, function (err) {
-            if (!err) {
+        Book.findByIdAndRemove(id)
+            .then(function (err) {
                 res.status(204); //No content
                 res.send();
-            }
-            else {
+            })
+            .catch(function () {
                 res.status(500);
                 res.send("Internal Server Error");
-            }
-        });
+
+            });
     }
 
     this.update = function (req, res) {
         var id = req.params.id;
 
-        Book.findByIdAndUpdate(id, {
-            $set:
-                {
-                    price: req.body.price,
-                    name: req.body.name,
-                    inStock: req.body.inStock,
-                    author: req.body.author
-                }
-        }, function (err, book) {
-            if (book) {
+        Book
+            .findByIdAndUpdate(id, {
+                $set:
+                    {
+                        price: req.body.price,
+                        name: req.body.name,
+                        inStock: req.body.inStock,
+                        author: req.body.author
+                    }
+            })
+            .then(function (book) {
                 res.status(200);
                 res.json(book);
-            }
-            else {
+            })
+            .catch(function (err) {
                 res.status(500);
                 res.send(err);
-            }
-        });
-
-
+            });
     }
 }
 
