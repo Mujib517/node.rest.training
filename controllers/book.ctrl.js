@@ -22,6 +22,12 @@ function BookCtrl() {
         }
 
         function successResult(books) {
+
+            for (var i = 0; i < books.length; i++) {
+                if (books[i].img)
+                    books[i].img = req.protocol + "://" + req.get("host") + "/" + books[i].img;
+            }
+
             var response = {
                 metadata: {
                     count: count,
@@ -51,6 +57,9 @@ function BookCtrl() {
         Book.findById(id, { '__v': 0 })
             .exec()
             .then(function (bk) {
+                if (bk.img) {
+                    bk.img = req.protocol + "://" + req.get("host") + "/" + bk.img;
+                }
                 book = bk;
                 return Review.find({ bookId: id }, { '__v': 0 }).exec();
             })
@@ -67,7 +76,7 @@ function BookCtrl() {
     }
 
     this.save = function (req, res) {
-        var book = new Book(req.body);
+        var book = new Book(req.body); //req.body.img
         book.save()
             .then(function (savedBook) {
                 res.status(201);//created

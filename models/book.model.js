@@ -3,7 +3,7 @@ var mongoose = require('mongoose');
 var model = mongoose.model("Book", {
     name: {
         type: String, required: [true, "Name is mandatory"],
-        minlength: [3, "Minimum 3 chars"], maxlength: [10, "Max 10 chars"]
+        minlength: [3, "Minimum 3 chars"], maxlength: [20, "Max 10 chars"]
     },
     author: { type: String, required: true },
     price: {
@@ -15,6 +15,7 @@ var model = mongoose.model("Book", {
         }
     },
     inStock: { type: Boolean, default: true },
+    img: { type: String },
     lastUpdated: { type: Date, default: Date.now }
 });
 

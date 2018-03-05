@@ -16,6 +16,7 @@ mongoose.connect(config.conStr, function () {
     console.log("Connected");
 });
 
+app.use(express.static("uploads/"));
 
 app.use(bodyParser.json());
 
