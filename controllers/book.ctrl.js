@@ -47,17 +47,18 @@ function BookCtrl() {
 
     this.getById = function (req, res) {
         var id = req.params.id;
-        Book.findById(id, { '__v': 0 }).exec()
-            .then(function (book) {
-
-                Review.find({ bookId: id }, { '__v': 0 })
-                    .exec()
-                    .then(function (reviews) {
-                        console.log(reviews);
-                    });
-
+        var book;
+        Book.findById(id, { '__v': 0 })
+            .exec()
+            .then(function (bk) {
+                book = bk;
+                return Review.find({ bookId: id }, { '__v': 0 }).exec();
+            })
+            .then(function (reviews) {
+                var jsonBook = book.toJSON();
+                jsonBook.reviews = reviews;
                 res.status(200);
-                res.send(book);
+                res.send(jsonBook);
             })
             .catch(function (err) {
                 res.status(500);
