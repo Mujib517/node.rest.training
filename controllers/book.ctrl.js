@@ -54,6 +54,7 @@ function BookCtrl() {
     this.getById = function (req, res) {
         var id = req.params.id;
         var book;
+        var jsonBook;
         Book.findById(id, { '__v': 0 })
             .exec()
             .then(function (bk) {
@@ -64,8 +65,22 @@ function BookCtrl() {
                 return Review.find({ bookId: id }, { '__v': 0 }).exec();
             })
             .then(function (reviews) {
-                var jsonBook = book.toJSON();
+
+                jsonBook = book.toJSON();
                 jsonBook.reviews = reviews;
+
+                return Review.aggregate([
+                    { $match: { bookId: id } },
+                    { $group: { _id: '$bookId', rating: { $avg: '$rating' } } },
+                    { $project: { _id: 0 } }
+
+                ]).exec();
+            })
+            .then(function (result) {
+                if (result && result.length > 0) {
+                    jsonBook.rating = result[0].rating;
+                }
+
                 res.status(200);
                 res.send(jsonBook);
             })
