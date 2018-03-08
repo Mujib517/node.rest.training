@@ -1,6 +1,7 @@
 var jwt = require('jsonwebtoken');
 var User = require('../models/user.model');
 var bcrypt = require('bcrypt');
+var config = require('../utilities/config');
 
 var userCtrl = {
 
@@ -8,7 +9,7 @@ var userCtrl = {
 
         if (req.body.username === 'admin' && req.body.password === 'password') {
 
-            var token = jwt.sign({ username: req.body.username }, 'secret');
+            var token = jwt.sign({ username: req.body.username }, config.privateKey);
 
             var response = {
                 username: req.body.username,
