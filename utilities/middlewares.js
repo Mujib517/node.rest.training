@@ -1,3 +1,5 @@
+var jwt = require('jsonwebtoken');
+
 module.exports = {
 
     isAuthenticated: function (req, res, next) {
@@ -14,6 +16,23 @@ module.exports = {
                 res.status(401);
                 res.send("Unauthorized");
             }
+        }
+        else {
+            res.status(401);
+            res.send("Unauthorized");
+        }
+    },
+
+    validateToken: function (req, res, next) {
+        var authHeader = req.headers["authorization"]; //[]
+        if (authHeader) {
+            var result = jwt.verify(authHeader, 'secret', function (err) {
+                if (err) {
+                    res.status(401);
+                    res.send("Unauthorized");
+                }
+                else next();
+            });
         }
         else {
             res.status(401);
