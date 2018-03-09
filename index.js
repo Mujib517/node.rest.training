@@ -1,6 +1,8 @@
 var express = require('express');
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
+var morgan = require('morgan');
+var fs = require('fs');
 
 var app = express();
 var config = require('./utilities/config');
@@ -18,6 +20,11 @@ mongoose.connect(config.conStr, function () {
     console.log("Connected");
 });
 
+
+var logSteam = fs.createWriteStream(__dirname + "/logs/request.log", { flags: 'a' });
+
+app.use(morgan('combined', { stream: logSteam }));
+
 app.use(express.static("uploads/"));
 
 app.use(bodyParser.json());
@@ -25,7 +32,7 @@ app.use(bodyParser.json());
 app.use('/', defaultRouter);
 app.use('/api/users', userRouter);
 
-app.use(middlewares.validateToken);
+//app.use(middlewares.validateToken);
 
 app.use('/api/reviews', reviewRouter);
 app.use('/api/books', bookRouter);
