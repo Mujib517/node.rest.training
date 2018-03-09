@@ -7,21 +7,32 @@ var userCtrl = {
 
     login: function (req, res) {
 
-        if (req.body.username === 'admin' && req.body.password === 'password') {
+        User.findOne({ username: req.body.username })
+            .exec()
+            .then(function (user) {
+                var hashedPwd = user.password;
+                var plainTextPwd = req.body.password;
 
-            var token = jwt.sign({ username: req.body.username }, config.privateKey);
+                var result = bcrypt.compareSync(plainTextPwd, hashedPwd);
+                if (result) {
+                    var token = jwt.sign({ username: req.body.username }, config.privateKey);
 
-            var response = {
-                username: req.body.username,
-                token: token
-            };
-            res.status(200);
-            res.send(response);
-        }
-        else {
-            res.status(401);
-            res.send("Wrong Credentials");
-        }
+                    var response = {
+                        username: req.body.username,
+                        token: token
+                    };
+                    res.status(200);
+                    res.send(response);
+                }
+                else {
+                    res.status(401);
+                    res.send("Wrong username or password");
+                }
+            })
+            .catch(function (err) {
+                res.status(401);
+                res.send("Wrong username or password");
+            });
     },
 
     register: function (req, res) {

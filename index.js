@@ -2,7 +2,6 @@ var express = require('express');
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 
-
 var app = express();
 var config = require('./utilities/config');
 var defaultRouter = require('./routes/default.router');
@@ -16,7 +15,6 @@ app.listen(3000, function () {
 });
 
 mongoose.connect(config.conStr, function () {
-
     console.log("Connected");
 });
 
@@ -24,7 +22,6 @@ app.use(express.static("uploads/"));
 
 app.use(bodyParser.json());
 
-//HTTP GET. API, Rest api, web svc, web api
 app.use('/', defaultRouter);
 app.use('/api/users', userRouter);
 
