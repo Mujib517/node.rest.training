@@ -2,6 +2,7 @@ var jwt = require('jsonwebtoken');
 var User = require('../models/user.model');
 var bcrypt = require('bcrypt');
 var config = require('../utilities/config');
+var logger = require('../utilities/logger');
 
 var userCtrl = {
 
@@ -16,20 +17,23 @@ var userCtrl = {
                 var result = bcrypt.compareSync(plainTextPwd, hashedPwd);
                 if (result) {
                     var token = jwt.sign({ username: req.body.username }, config.privateKey);
-
+                    
                     var response = {
                         username: req.body.username,
                         token: token
                     };
+                    logger.info("Login Successful for " + req.body.username);
                     res.status(200);
                     res.send(response);
                 }
                 else {
+                    logger.error("LOgin failed for " + req.body.username);
                     res.status(401);
                     res.send("Wrong username or password");
                 }
             })
             .catch(function (err) {
+                logger.error(err);
                 res.status(401);
                 res.send("Wrong username or password");
             });
@@ -57,7 +61,6 @@ var userCtrl = {
                 else {
                     res.send(err);
                 }
-
             });
     }
 };

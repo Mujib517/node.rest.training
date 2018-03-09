@@ -1,0 +1,1 @@
+{"name":"myLogger","hostname":"Mujib-PC","pid":137744,"level":50,"err":{"message":"Cannot read property 'password' of null","name":"TypeError","stack":"TypeError: Cannot read property 'password' of null\n    at I:\\myprojects\\node.api.training\\controllers\\user.ctrl.js:14:37"},"msg":"Cannot read property 'password' of null","time":"2018-03-09T03:40:00.061Z","v":0}

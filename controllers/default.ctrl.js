@@ -1,5 +1,7 @@
+
 var defaultCtrl = {
     get: function (req, res) {
+        logger.info("Get request made");
         res.send("Hello ExpressJS");
     },
 

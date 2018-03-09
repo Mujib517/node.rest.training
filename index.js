@@ -16,6 +16,7 @@ app.listen(3000, function () {
     console.log("server is running 3000");
 });
 
+
 mongoose.connect(config.conStr, function () {
     console.log("Connected");
 });
