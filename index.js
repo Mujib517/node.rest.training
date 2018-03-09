@@ -12,8 +12,11 @@ var reviewRouter = require('./routes/review.router');
 var userRouter = require('./routes/user.router');
 var middlewares = require('./utilities/middlewares');
 
-app.listen(3000, function () {
-    console.log("server is running 3000");
+var port = process.env.PORT || 3000;
+
+
+app.listen(port, function () {
+    console.log("server is running " + port);
 });
 
 
