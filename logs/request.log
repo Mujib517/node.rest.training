@@ -6,3 +6,4 @@
 ::1 - - [09/Mar/2018:03:40:00 +0000] "POST /api/users/login HTTP/1.1" 401 26 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/64.0.3282.186 Safari/537.36"
 ::1 - - [09/Mar/2018:03:41:54 +0000] "GET /api/products HTTP/1.1" 404 151 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/64.0.3282.186 Safari/537.36"
 ::1 - - [09/Mar/2018:03:41:57 +0000] "GET /api/books HTTP/1.1" 304 - "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/64.0.3282.186 Safari/537.36"
+::1 - - [10/Mar/2018:03:05:49 +0000] "GET /api/books HTTP/1.1" 200 253 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/64.0.3282.186 Safari/537.36"

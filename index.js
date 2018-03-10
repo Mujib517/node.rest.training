@@ -3,6 +3,8 @@ var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 var morgan = require('morgan');
 var fs = require('fs');
+var os = require('os');
+var cluster = require('cluster');
 
 var app = express();
 var config = require('./utilities/config');
@@ -14,10 +16,17 @@ var middlewares = require('./utilities/middlewares');
 
 var port = process.env.PORT || 3000;
 
+if (cluster.isMaster) {
+    for (var i = 0; i < os.cpus().length; i++) {
+        cluster.fork();
+    }
+}
+else {
+    app.listen(port, function () {
+        console.log("server is running " + port, process.pid);
+    });
+}
 
-app.listen(port, function () {
-    console.log("server is running " + port);
-});
 
 
 mongoose.connect(config.conStr, function () {
