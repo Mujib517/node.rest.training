@@ -18,16 +18,16 @@ var middlewares = require('./utilities/middlewares');
 
 var port = process.env.PORT || 3000;
 //round robin
-if (cluster.isMaster) {
-    for (var i = 0; i < os.cpus().length; i++) {
-        cluster.fork();
-    }
-}
-else {
-    app.listen(port, function () {
-        console.log("server is running " + port, process.pid);
-    });
-}
+// if (cluster.isMaster) {
+//     for (var i = 0; i < os.cpus().length; i++) {
+//         cluster.fork();
+//     }
+// }
+// else {
+app.listen(port, function () {
+    console.log("server is running " + port, process.pid);
+});
+//}
 
 
 
